@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KUKU Fireworks Invoice</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+    th { background: #f2f2f2; }
+    h2 { text-align: center; }
+    .total { font-weight: bold; font-size: 18px; }
+    input { width: 60px; }
+  </style>
+</head>
+
+<body>
+
+<h2>KUKU Fireworks – Order Invoice</h2>
+
+<p><b>Customer Name:</b> <input type="text"></p>
+<p><b>Mobile Number:</b> <input type="text"></p>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Price (₹)</th>
+    <th>Qty</th>
+    <th>Total (₹)</th>
+  </tr>
+
+  <tr>
+    <td>Flower Pots</td>
+    <td>120</td>
+    <td><input type="number" value="0" onchange="calc()"></td>
+    <td class="rowTotal">0</td>
+  </tr>
+
+  <tr>
+    <td>Sparklers</td>
+    <td>90</td>
+    <td><input type="number" value="0" onchange="calc()"></td>
+    <td class="rowTotal">0</td>
+  </tr>
+
+  <tr>
+    <td>Rocket Bomb</td>
+    <td>250</td>
+    <td><input type="number" value="0" onchange="calc()"></td>
+    <td class="rowTotal">0</td>
+  </tr>
+
+</table>
+
+<p class="total">Grand Total: ₹ <span id="grandTotal">0</span></p>
+
+<p>
+📸 Please take a screenshot of this invoice and send it to WhatsApp  
+<br>
+📲 WhatsApp: +91XXXXXXXXXX  
+<br>
+💰 GPay Number: XXXXXXXXXX
+</p>
+
+<script>
+function calc() {
+  let rows = document.querySelectorAll("table tr");
+  let grand = 0;
+
+  for (let i = 1; i < rows.length; i++) {
+    let price = rows[i].cells[1]?.innerText;
+    let qty = rows[i].cells[2]?.querySelector("input");
+    let totalCell = rows[i].cells[3];
+
+    if (price && qty) {
+      let total = price * qty.value;
+      totalCell.innerText = total;
+      grand += total;
+    }
+  }
+  document.getElementById("grandTotal").innerText = grand;
+}
+</script>
+
+</body>
+</html>
