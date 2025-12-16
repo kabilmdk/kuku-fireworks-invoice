@@ -1,6 +1,6 @@
 const prices = {
-  fp: 120,
-  gc: 150
+  fp: { name: "Flower Pot Big", price: 120 },
+  gc: { name: "Ground Chakkar Deluxe", price: 150 }
 };
 
 function changeQty(id, change) {
@@ -11,36 +11,78 @@ function changeQty(id, change) {
 }
 
 function generateInvoice() {
-  const name = document.getElementById("name").value;
-  const address = document.getElementById("address").value;
+  const name = document.getElementById("name").value || "-";
+  const address = document.getElementById("address").value || "-";
 
   let total = 0;
-  let html = `<p><b>Name:</b> ${name}</p><p><b>Address:</b> ${address}</p><table>`;
-  html += `<tr><th>Item</th><th>Qty</th><th>Price</th></tr>`;
+  let html = `
+    <p><b>Name:</b> ${name}</p>
+    <p><b>Address:</b> ${address}</p>
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Amount</th>
+      </tr>
+  `;
 
   for (let id in prices) {
     const qty = parseInt(document.getElementById(id).innerText);
     if (qty > 0) {
-      const cost = qty * prices[id];
-      total += cost;
-      html += `<tr><td>${id}</td><td>${qty}</td><td>₹${cost}</td></tr>`;
+      const amount = qty * prices[id].price;
+      total += amount;
+      html += `
+        <tr>
+          <td>${prices[id].name}</td>
+          <td>${qty}</td>
+          <td>₹${amount}</td>
+        </tr>
+      `;
     }
   }
 
-  html += `</table><h3>Total: ₹${total}</h3>`;
+  html += `
+      <tr>
+        <th colspan="2">Total</th>
+        <th>₹${total}</th>
+      </tr>
+    </table>
+  `;
 
   document.getElementById("invoiceContent").innerHTML = html;
   document.getElementById("invoice").classList.remove("hidden");
 }
 
-function sendWhatsApp() {
-  generateInvoice();
-  const text = document.getElementById("invoiceContent").innerText;
-  const phone = "91XXXXXXXXXX"; // your number
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`);
-}
-
 function downloadInvoice() {
   generateInvoice();
-  window.print();
+
+  const invoice = document.getElementById("invoice");
+
+  const options = {
+    margin: 10,
+    filename: 'KUKU-Crackers-Invoice.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().from(invoice).set(options).save();
+}
+
+function sendWhatsApp() {
+  generateInvoice();
+
+  let message = `🧾 *KUKU Crackers Order*\n\n`;
+
+  for (let id in prices) {
+    const qty = parseInt(document.getElementById(id).innerText);
+    if (qty > 0) {
+      message += `${prices[id].name} : ${qty}\n`;
+    }
+  }
+
+  message += `\n📎 Please attach the invoice PDF\n💰 GPay: +91-9597013244`;
+
+  const phone = "+91-9597013244"; // YOUR NUMBER
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
 }
