@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>KUKU Crackers – Online Order</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- PDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -42,14 +45,30 @@
 
 <section class="actions">
   <button onclick="generateInvoice()">Preview Invoice</button>
+  <button onclick="downloadInvoice()">Download Invoice (PDF)</button>
   <button onclick="sendWhatsApp()">Send on WhatsApp</button>
-  <button onclick="downloadInvoice()">Download Invoice</button>
 </section>
 
+<!-- INVOICE -->
 <section id="invoice" class="invoice hidden">
   <h2>Order Invoice</h2>
   <div id="invoiceContent"></div>
-  <p><b>Payment:</b> GPay to <b>+91XXXXXXXXXX</b></p>
+  <p class="pay"><b>Payment:</b> GPay to <b>+91XXXXXXXXXX</b></p>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="instructions">
+  <h3>📌 Order Instructions</h3>
+  <ol>
+    <li>Select crackers and quantity</li>
+    <li>Enter your name and address</li>
+    <li>Click <b>Preview Invoice</b></li>
+    <li>Click <b>Download Invoice (PDF)</b></li>
+    <li>Click <b>Send on WhatsApp</b></li>
+    <li>Attach the downloaded invoice PDF in WhatsApp</li>
+    <li>Pay via <b>GPay to +91XXXXXXXXXX</b></li>
+    <li>Send payment screenshot for confirmation</li>
+  </ol>
 </section>
 
 <script src="script.js"></script>
